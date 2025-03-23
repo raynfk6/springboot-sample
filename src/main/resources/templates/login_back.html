@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Please Log In</title>
+  <script src="/js/axios.min.js"></script>
+  <script src="/js/vue.esm-browser.prod.js"></script>
+  <script src="/js/vue-router.global.prod.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Hello Vue Router App!</h1>
+    <p>
+      <!-- use the router-link component for navigation. -->
+      <!-- specify the link by passing the `to` prop. -->
+      <!-- `<router-link>` will render an `<a>` tag with the correct `href` attribute -->
+      <router-link to="/">Go to Home</router-link>
+      <router-link to="/login">Login</router-link>
+    </p>
+    <!-- route outlet -->
+    <!-- component matched by the route will render here -->
+    <section>
+      <router-view></router-view>
+    </section>
+    
+  </div>
+  <div id="app">
+    <h1>Please Log In</h1>
+    <span id="loginMessage" style="display: none;"></span>
+    <br />
+    username: <input type="text" id="username" /><br />
+    password: <input type="text" id="password" /><br />
+    <button id="loginSubmitBtn">submit</button>
+  </div>
+
+  <script>
+    const routes = [
+      { path: "/", component: { template: "<div>Home</div>" } },
+      { path: "/about", component: { template: "<div>About</div>" } }
+    ];
+    const router = VueRouter.createRouter({
+      history: VueRouter.createWebHistory(),
+      routes
+    });
+    const app = Vue.createApp({
+      data() {
+        return {}
+      }
+    });
+    app.use(router);
+    app.mount('#app');
+
+    const loginMessage = document.querySelector("#loginMessage");
+    const login = async (userName, password) => {
+
+      await axios.post(
+        "/api/auth/login",
+        { "userName": userName, "password": password }
+      ).then(function () {
+        router.replace({ path: "/" });
+      }).catch(function (error) {
+        loginMessage.setAttribute("style", "display: block");
+
+        if (error.data === "invalid") {
+          loginMessage.textContent = "Login Failed(" + error + ")";
+        } else {
+          loginMessage.textContent = error;
+        }
+      });
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginButton = document.querySelector("#loginSubmitBtn");
+      loginButton.addEventListener("click", function () {
+        const userName = document.querySelector("#username").value;
+        const password = document.querySelector("#password").value;
+        login(userName, password);
+      })
+    })
+  </script>
+
+</body>
+
+</html>
