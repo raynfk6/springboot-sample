@@ -5,20 +5,99 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Please Log In</title>
-  <!-- <script th:src="@{/js/libs/axios.min.js}"></script> -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .form-signin {
+      max-width: 330px;
+      padding: 1rem;
+    }
+
+    .form-signin .form-floating:focus-within {
+      z-index: 2;
+    }
+
+    .form-signin input[type="text"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .modal-sheet .modal-dialog {
+      width: 380px;
+      transition: bottom .75s ease-in-out;
+    }
+
+    .modal-sheet .modal-footer {
+      padding-bottom: 2rem;
+    }
+  </style>
+  <script th:src="@{/js/libs/axios.min.js}"></script>
 </head>
 
-<body>
-  <div>
-    <h1>Please Log In</h1>
-    <div id="loginMessage" style="display: none;"></div>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+  <div id="app" class="container form-signin w-100 m-auto">
     <form th:action="@{/auth/login}" method="post">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" /><br />
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" /><br />
-      <button type="submit">Log in</button>
+      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="username" name="username" placeholder="username" />
+        <label for="username">Username</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+          autocomplete="off" />
+        <label for="password">Password</label>
+      </div>
+      <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+      <div th:if="${message}" class="py-2 my-2 form-floating alert alert-danger" th:text="'Error: ' + ${message}"></div>
+      <div v-show="isMessageShow" ref="message" class="py-2 my-2 form-floating alert alert-success"></div>
+      <hr class="my-4">
+      <div class="form-floating py-4">沒有帳戶嗎? <a href="#" @click="signupLinkOnClick">建立一個吧!</a></div>
     </form>
+
+    <div id="modalSignup" :class="[isBlock ? 'd-block':'d-none', 'modal modal-sheet p-4 py-md-5']" tabindex="-1"
+      role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+            <h1 class="fw-bold mb-0 fs-2">Sign up</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+              @click="signupDialogOnClose"></button>
+          </div>
+
+          <div class="modal-body p-5 pt-0">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-3" id="signupUsername" placeholder="username">
+              <label for="signupUsername">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control rounded-3" id="signupPassword" placeholder="Password"
+                autocomplete="off">
+              <label for="signupPassword">Password</label>
+            </div>
+            <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" @click="signupOnSumbit">Sign up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="fixed-bottom py-3 my-4 border-top">
+      <p class="text-center text-body-secondary">&copy; example-copyright</span>
+    </footer>
+    <script th:src="@{/js/libs/bootstrap.min.js}"></script>
+    <script type="module" th:src="@{/js/login.js}"></script>
   </div>
 </body>
 

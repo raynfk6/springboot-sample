@@ -1,4 +1,4 @@
-package tw.example.com.springbootexample.domain.model;
+package tw.example.com.springbootexample.domain.dataclass;
 
 public enum AccountRole {
     Programmer,

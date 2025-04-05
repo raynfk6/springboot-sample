@@ -1,0 +1,61 @@
+package tw.example.com.springbootexample.domain.entity;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import tw.example.com.springbootexample.domain.dataclass.AccountRole;
+
+public class Account {
+    private Long id;
+    private String username;
+    private String password;
+    private Set<AccountRole> roles;
+    private Set<String> projects;
+
+    public Account(String username) {
+        this.username = username;
+    }
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.roles = new HashSet<>();
+        this.projects = new HashSet<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String userName) {
+        this.username = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<AccountRole> getRoles() {
+        return this.roles;
+    }
+
+    public Set<String> getProjects() {
+        return this.projects;
+    }
+
+    // public void setRoles(Set<AccountRole> roles) {
+    //     this.roles = roles;
+    // }
+}

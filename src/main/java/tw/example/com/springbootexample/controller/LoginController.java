@@ -2,70 +2,54 @@ package tw.example.com.springbootexample.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import tw.example.com.springbootexample.application.dto.SignupDto;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 
 @Controller
 @RequestMapping("/auth")
 public class LoginController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
+    // TODO: Signup
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request, Model model) {
+        if (this.checkIsAuthenticated()) {
+            return "redirect:/";
+        }
+
+        Object message = request.getSession().getAttribute("message");
+        if (null != message) {
+            model.addAttribute("message", message);
+            request.getSession().removeAttribute("message");
+        }
+
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest) {
-        try {
-            UsernamePasswordAuthenticationToken token =
-                    new UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password);
-            Authentication authentication = authenticationManager.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            
-            httpRequest.getSession(true).setAttribute(
-                "SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-            
-            return "redirect:/";
-        } catch (Exception e) {
-            return "login";
+    private boolean checkIsAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (null == authentication) {
+            return false;
         }
-    }
+        if ("anonymousUser".equals(authentication.getPrincipal())) {
+            return false;
+        }
+        if (authentication.isAuthenticated()) {
+            return true;
+        }
 
-        // @PostMapping("/login")
-    // public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest) {
-    //     try {
-    //         UsernamePasswordAuthenticationToken token =
-    //                 new UsernamePasswordAuthenticationToken(loginRequest.userName, loginRequest.password);
-    //         Authentication authentication = authenticationManager.authenticate(token);
-    //         SecurityContextHolder.getContext().setAuthentication(authentication);
-            
-    //         httpRequest.getSession(true).setAttribute(
-    //             "SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-            
-    //         return ResponseEntity.ok("success");
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid");
-    //     }
-    // }
-
-    public static class LoginRequest {
-        public String username;
-        public String password;
+        return false;
     }
 
     @GetMapping("/api/logout")
@@ -73,4 +57,12 @@ public class LoginController {
         request.getSession().invalidate();
         return ResponseEntity.ok("Logged out successfully");
     }
+
+    @PostMapping("/api/signup")
+    @ResponseBody
+    public String postMethodName(@RequestBody SignupDto signupDto) {
+        
+        return "success";
+    }
+    
 }

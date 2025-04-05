@@ -1,28 +1,25 @@
-package tw.example.com.springbootexample.domain.model;
+package tw.example.com.springbootexample.infrastructrue.security;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import tw.example.com.springbootexample.domain.dataclass.AccountRole;
+import tw.example.com.springbootexample.domain.entity.Account;
 
-public class Account implements UserDetails {
-    // @Autowired
-    // private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+public class AccountDetails implements UserDetails {
+    private final Account account;
 
-    private Long Id;
-    private String userName;
-    private String password;
-    private AccountRole role;
+    public AccountDetails(Account account) {
+        this.account = account;
+    }
 
-    public Account(String userName, String password, AccountRole role) {
-        this.userName = userName;
-        this.password = password;
-        this.role = role;
+    public Account getAccount() {
+        return this.account;
     }
 
     /**
@@ -31,17 +28,24 @@ public class Account implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        
+        for (AccountRole role : this.account.getRoles()) {
+            GrantedAuthority authority = new SimpleGrantedAuthority(role.name());
+            authorities.add(authority);
+        }
+
+        return authorities;
     }
 
     @Override
     public String getUsername() {
-        return userName;
+        return this.account.getUsername();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return this.account.getPassword();
     }
 
     /**
