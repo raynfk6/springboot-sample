@@ -4,13 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import tw.example.com.springbootexample.domain.dataclass.AccountRole;
+import tw.example.com.springbootexample.domain.dataclass.Project;
 
 public class Account {
     private Long id;
     private String username;
     private String password;
     private Set<AccountRole> roles;
-    private Set<String> projects;
+    private Set<Project> projects;
 
     public Account(String username) {
         this.username = username;
@@ -51,11 +52,23 @@ public class Account {
         return this.roles;
     }
 
-    public Set<String> getProjects() {
+    public void addRole(AccountRole role) {
+        this.roles.add(role);
+    }
+
+    public void removeRole(AccountRole role) {
+        this.roles.remove(role);
+    }
+
+    public Set<Project> getProjects() {
         return this.projects;
     }
 
-    // public void setRoles(Set<AccountRole> roles) {
-    //     this.roles = roles;
-    // }
+    public void addProject(Project project) {
+        this.projects.add(project);
+    }
+
+    public void removeProject(Project project) {
+        this.projects.remove(project);
+    }
 }

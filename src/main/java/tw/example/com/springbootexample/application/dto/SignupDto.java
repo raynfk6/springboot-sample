@@ -3,6 +3,7 @@ package tw.example.com.springbootexample.application.dto;
 public class SignupDto {
     private String username;
     private String password;
+    private String projectType;
 
     public SignupDto(String username, String password) {
         this.username = username;
@@ -20,6 +21,11 @@ public class SignupDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    public String getProjectType() {
+        return this.projectType;
+    }
+    public void setProjectType(String projectType) {
+        this.projectType = projectType;
+    }
     
 }

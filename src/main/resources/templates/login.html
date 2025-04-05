@@ -87,6 +87,17 @@
                 autocomplete="off">
               <label for="signupPassword">Password</label>
             </div>
+            <div class="form-floating mb-3">
+              <span>專案型態：</span>
+              <div class="form-check form-check-inline" v-for="projectType in projectTypes" >
+                <input type="checkbox" class="form-check-input" v-model="projectType.checked" :id="projectType.id" :value="projectType.val" />
+                <label class="form-check-label" :for="projectType.id">{{ projectType.text }}</label>
+              </div>
+              <!-- <div class="form-check form-check-inline">
+                <input v-model="projectType.checked" type="checkbox" class="form-check-input" id="nonCoreCheckBox" value="nonCore" />
+                <label class="form-check-label" for="nonCoreCheckBox">非核心</label>
+              </div> -->
+            </div>
             <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" @click="signupOnSumbit">Sign up</button>
           </div>
         </div>

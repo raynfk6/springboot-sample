@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @RequestMapping("/auth")
 public class LoginController {
-    // TODO: Signup
     @GetMapping("/login")
     public String login(HttpServletRequest request, Model model) {
         if (this.checkIsAuthenticated()) {
@@ -61,7 +60,7 @@ public class LoginController {
     @PostMapping("/api/signup")
     @ResponseBody
     public String postMethodName(@RequestBody SignupDto signupDto) {
-        
+        // TODO: sign up create Account then save Account
         return "success";
     }
     
