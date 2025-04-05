@@ -1,4 +1,4 @@
-package tw.example.com.springbootexample.domain.entity;
+package tw.example.com.springbootexample.domain.model;
 
 import java.util.HashSet;
 import java.util.Set;

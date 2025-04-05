@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import tw.example.com.springbootexample.domain.entity.Account;
+import tw.example.com.springbootexample.domain.model.Account;
 import tw.example.com.springbootexample.domain.repository.AccountRepository;
 
 @Repository

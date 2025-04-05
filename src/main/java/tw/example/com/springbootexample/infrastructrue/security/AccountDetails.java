@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import tw.example.com.springbootexample.domain.dataclass.AccountRole;
-import tw.example.com.springbootexample.domain.entity.Account;
+import tw.example.com.springbootexample.domain.model.Account;
 
 public class AccountDetails implements UserDetails {
     private final Account account;
